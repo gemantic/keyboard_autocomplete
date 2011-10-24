@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="zh-CN">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Untitled Document</title>
+        <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="/js/keyboard_autocomplete-1.0.js"></script>
+        
+        <script type="text/javascript" src="/js/jquery.jsonp-1.0.4.min.js"></script>
+        <link rel="Stylesheet" href="/style/jquery.autocomplete.css" />
+<script>
+$(function() {
+    var HttpParam = {
+        url : "http://info.gemantic.com:9085/prompt/list.do",
+        param : function(val) {
+            var data = {
+                'queryType' :  'theme',
+                'searchFrom':  'stock',
+                'count'     :  10,
+                'query'     :  val,
+            }
+            return data;
+        }
+    }
+    //配置
+    var configuration = {
+        
+        /**
+         * 解析请求成功后返回的responseData，解析返回结果中的数据。
+         * 如果为空，则默认为ResponseData数据。
+         * 可选项
+         * @param {Object} responseData Ajax请求服务器端的返回值 
+         * @return  需要后续方法中处理的内容，通常是一组数据列表
+         * 
+         * 
+         */
+        dealData : function(responseData) {         
+             return responseData.list;
+        },
+        
+        
+        
+        /**
+         * 下拉列表中用户看到的内容
+         * 
+         * @param {Object} dealData 
+         * @return  
+         */ 
+        listItemDisplay: function(dealData) {
+            return dealData.id + "   " + dealData.label;
+        },
+        
+        
+        /**
+         * 选中后Input框中显示的内容
+         * 可选项
+         * @param {Object} list
+         */ 
+        inputDisplay: function(dealData) {
+            return dealData.label;
+        },      
+        
+        //指定另一个节点，为它的value赋值原节点不能放下的内容
+        anotherValueBox : "#idBox",
+    
+        /**
+         * 
+         * 为anotherValueBox指定数据,可用于向服务器发送的内容。如使用键盘精灵选中“万科公司”，将anotherValue设置为万科的代码“000002”，再执行其它发送请求时不发送名称，而是发送代码。
+         * 可选项。
+         * @param {Object} list
+         */
+        anotherValue : function(list) {
+            return list.id;
+        },
+        
+        //宽度,可选
+        width: 152,
+        //击键后激活的延迟时间(单位毫秒)，默认400，可选
+        delay : 400,
+        //在触发前用户至少需要输入的字符数，默认为1，可选
+        minChars : 1,
+        //跨域与否，默认true跨域，可选
+        domain : true,
+    }
+    
+    $("#keyword").autokeyboard(HttpParam, configuration);
+})   
+            
+</script>
+    </head>
+    <body>
+        <input id="keyword"/>
+        <input id="idBox"/>
+    </body>
+</html>
